@@ -1,0 +1,26 @@
+User
+    Auth> User > Type.Reception => PatientIndex
+    Auth> User > Type.lab => HTS_Index
+
+Reception      
+
+    PatientIndex
+
+        1. to add date format
+        2. to router link to DetailPage
+
+    DetailPage 
+        1. edit detail 
+        2. add ART#
+        3. list all visit 
+        4. add new visit
+        5. edit firebase database
+
+    NewPatientPage
+        1. to add to firebase database
+
+HTS 
+    HTS_Index
+        1. list HTS from all PatientIndex
+        2. edit result
+
