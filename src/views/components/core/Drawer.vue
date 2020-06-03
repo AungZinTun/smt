@@ -41,11 +41,10 @@
             class="display-1"
             v-text="profile.title"
           />
-          <v-list-item-title>
+          <!-- <v-list-item-title>
             <v-btn x-small>
-              Clinic Register
             </v-btn>
-          </v-list-item-title>
+          </v-list-item-title> -->
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -164,7 +163,7 @@
       profile () {
         return {
           avatar: true,
-          title: 'NAP',
+          title: 'ရွှေမင်းသမီး',
         }
       },
     },

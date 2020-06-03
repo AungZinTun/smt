@@ -1,13 +1,12 @@
 <template>
   <div class="team">
     <v-container class="my-5">
-      <h1 class="subheading grey--text">
-        ဆရာဝန်များ
-      </h1>
+      <!-- <h1 class="subheading grey--text">
+      </h1> -->
 
       <v-row>
         <v-col
-          v-for="person in clinician_select"
+          v-for="person in item_list"
           :key="person.id"
           cols="12"
           sm="6"
@@ -23,43 +22,39 @@
                 size="100"
                 class="grey lighten-2"
               >
-                <img src="/avatar-3.png">
+                <img src="`${person.photo}`">
               </v-avatar>
             </v-responsive>
             <v-card-text>
               <div class="subheading">
-                {{ person.userId }}
+                {{ person.name }}
               </div>
               <div class="grey--text">
-                {{ person.speciality }}
+                {{ person.brand }}
               </div>
             </v-card-text>
             <v-card-actions>
+              <v-spacer />
               <v-chip
-                v-for="(t, index) in person.available_time"
-                :key="index"
-                small
 
-                class="info"
+                class="transparent"
               >
                 <v-avatar left>
-                  <v-icon x-small>mdi-clock</v-icon>
+                  <v-icon class="orange--text"> mdi-cart </v-icon>
                 </v-avatar>
-                {{ t }}
               </v-chip>
-               <v-spacer />
-              <v-chip
+              <!-- <v-chip
                 v-for="(t, index) in person.type"
                 :key="index"
                 small
 
                 class="info"
               >
-               <v-avatar left>
+                <v-avatar left>
                   <v-icon small> mdi-stethoscope </v-icon>
                 </v-avatar>
                 {{ t }}
-              </v-chip>
+              </v-chip> -->
             </v-card-actions>
           </v-card>
         </v-col>
@@ -73,17 +68,11 @@
   export default {
     data () {
       return {
-        team: [
-          { name: 'Dr.One', Degree: 'MMed', avatar: '' },
-          { name: 'Dr.Two', Degree: 'MSc', avatar: '/avatar-2.png' },
-          { name: 'Dr.Three', Degree: 'DMedSc', avatar: '/avatar-3.png' },
-          { name: 'Dr.Four', Degree: 'MSc', avatar: '/avatar-3.png' },
-          { name: 'Dr.Five', Degree: 'MSc', avatar: '/avatar-2.png' },
-        ],
+
       }
     },
     computed: {
-      ...mapGetters(['clinician_select']),
+      ...mapGetters(['item_list']),
     },
   }
 </script>

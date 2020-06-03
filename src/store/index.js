@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as patients from '@/store/modules/patients.js'
+import * as shop from '@/store/modules/shop.js'
 import * as users from '@/store/modules/users.js'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-   patients,
+   shop,
    users,
   },
   state: {
