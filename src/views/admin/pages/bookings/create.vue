@@ -136,7 +136,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  // import { mapGetters } from 'vuex'
   export default {
     data () {
       return {
@@ -165,7 +165,7 @@
       }
     },
     computed: {
-      ...mapGetters(['clinician_select']),
+      // ...mapGetters(['clinician_select']),
     },
     methods: {
       submit () {

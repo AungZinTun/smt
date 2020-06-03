@@ -47,7 +47,61 @@
         }
       },
       "items":{
-        "i00001": { "id":"i00001", "brand": "Fairy", "name": "Fairy Prebiotic Jelly", "detail": "အဆီချ Jelly" , "price": 15000 , "photo": "/fariy_jelly.jpg"},
-        "i00002": { "id":"i00002", "brand": "Fairy", "name": "Fairy Prebiotic Jelly", "detail": "အဆီချ Jelly" , "price": 15000 , "photo": "/facial_form.jpg"}
+        "i00001": { 
+          "id":"i00001",
+          "brand": "Fairy",
+          "name": "Whitening body lotion",
+          "detail": "အဆီချ Jelly" ,
+          "photo": "https://firebasestorage.googleapis.com/v0/b/shweminthamee-mm.appspot.com/o/items%2FDSC00133-2.jpg?alt=media&token=de5684b0-0b2a-486f-83de-b4744cd50304",
+          "retail_price": {
+            "1": {"level": 7, "quanity": 1, "retail_price": 15000},
+            "2": {"level": 6, "quanity": 3, "retail_price": 12000},
+            "3": {"level": 5, "quanity": 10, "retail_price": 11500},
+            "4": {"level": 4, "quanity": 48, "retail_price": 11000},
+            "5": {"level": 3, "quanity": 144, "retail_price": 10500},
+            "6": {"level": 2, "quanity": 480, "retail_price": 10000},
+            "7": {"level": 1, "quanity": 960, "retail_price": 95000}
+          }
+        },
+        "i00002": { "id":"i00002", "brand": "Fairy", "name": "Fairy Prebiotic Jelly", "detail": "အဆီချ Jelly" , "price": 15000 , "photo": "https://firebasestorage.googleapis.com/v0/b/shweminthamee-mm.appspot.com/o/items%2FDSC00127.jpg?alt=media&token=32a050d9-32c4-41c5-94e7-95978c255462",
+          "retail_price": {
+            "1": {"level": 7, "quanity": 1, "retail_price": 15000},
+            "2": {"level": 6, "quanity": 3, "retail_price": 12000},
+            "3": {"level": 5, "quanity": 10, "retail_price": 11500},
+            "4": {"level": 4, "quanity": 48, "retail_price": 11000},
+            "5": {"level": 3, "quanity": 144, "retail_price": 10500},
+            "6": {"level": 2, "quanity": 480, "retail_price": 10000},
+            "7": {"level": 1, "quanity": 960, "retail_price": 95000}
+          }},
+          "i00003": { "id":"i00003", "brand": "Fairy", "name": "Acne Oil Control Facial Form", "detail": "facial form for acane" , "price": 15000 , "photo": "https://firebasestorage.googleapis.com/v0/b/shweminthamee-mm.appspot.com/o/items%2FDSC00125.jpg?alt=media&token=ae59223b-e443-48eb-a0fd-32fbb3f2f1f0",
+            "retail_price": {
+              "1": {"level": 7, "quanity": 1, "retail_price": 15000},
+              "2": {"level": 6, "quanity": 3, "retail_price": 12000},
+              "3": {"level": 5, "quanity": 10, "retail_price": 11500},
+              "4": {"level": 4, "quanity": 48, "retail_price": 11000},
+              "5": {"level": 3, "quanity": 144, "retail_price": 10500},
+              "6": {"level": 2, "quanity": 480, "retail_price": 10000},
+              "7": {"level": 1, "quanity": 960, "retail_price": 95000}
+            }},
+            "i00004": { "id":"i00004", "brand": "Fairy", "name": "Facial Form", "detail": "facial form" , "price": 15000 , "photo": "https://firebasestorage.googleapis.com/v0/b/shweminthamee-mm.appspot.com/o/items%2FDSC00132-2.jpg?alt=media&token=e01fe53c-5a4a-44c6-8844-73c617ba5b35",
+              "retail_price": {
+                "1": {"level": 7, "quanity": 1, "retail_price": 15000},
+                "2": {"level": 6, "quanity": 3, "retail_price": 12000},
+                "3": {"level": 5, "quanity": 10, "retail_price": 11500},
+                "4": {"level": 4, "quanity": 48, "retail_price": 11000},
+                "5": {"level": 3, "quanity": 144, "retail_price": 10500},
+                "6": {"level": 2, "quanity": 480, "retail_price": 10000},
+                "7": {"level": 1, "quanity": 960, "retail_price": 95000}
+              }},
+              "i00005": { "id":"i00005", "brand": "Fairy", "name": "Facial Form", "detail": "facial form" , "price": 15000 , "photo": "https://firebasestorage.googleapis.com/v0/b/shweminthamee-mm.appspot.com/o/items%2FDSC00134.jpg?alt=media&token=dbd58a9d-850c-42b4-ab64-b3ee80fff7d0",
+                "retail_price": {
+                  "1": {"level": 7, "quanity": 1, "retail_price": 15000},
+                  "2": {"level": 6, "quanity": 3, "retail_price": 12000},
+                  "3": {"level": 5, "quanity": 10, "retail_price": 11500},
+                  "4": {"level": 4, "quanity": 48, "retail_price": 11000},
+                  "5": {"level": 3, "quanity": 144, "retail_price": 10500},
+                  "6": {"level": 2, "quanity": 480, "retail_price": 10000},
+                  "7": {"level": 1, "quanity": 960, "retail_price": 95000}
+                }}
       }
 }

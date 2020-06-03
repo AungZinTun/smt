@@ -18,7 +18,7 @@
             <v-icon size="18">
               mdi-dash
             </v-icon>
-            by <a href="#"> NAP-Taunggyi</a> .
+            by <a href="#"> Shweminthamee </a> .
           </div>
         </v-col>
       </v-row>

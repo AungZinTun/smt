@@ -1,144 +1,75 @@
-import * as firebase from 'firebase'
+import { countObjectProperties, removeEmptyProperties } from '@/utils'
+import firebase from 'firebase'
+import 'firebase/auth'
+import 'firebase/database'
+import Vue from 'vue'
+import { makeAppendChildToParentMutation } from '@/store/assetHelpers'
 
-export const state = {
-    user: null,
-  }
-export const mutations = {
-    registerUserForMeetup (state, payload) {
-      const id = payload.id
-      if (state.user.registeredMeetups.findIndex(meetup => meetup.id === id) >= 0) {
-        return
+export default {
+  namespaced: true,
+
+  state: {
+    items: {},
+  },
+
+  getters: {
+    userPosts: (state, getters, rootState) => id => {
+      const user = state.items[id]
+      if (user.posts) {
+        return Object.values(rootState.posts.items)
+          .filter(post => post.userId === id)
       }
-      state.user.registeredMeetups.push(id)
-      state.user.fbKeys[id] = payload.fbKey
+      return []
     },
-    unregisterUserFromMeetup (state, payload) {
-      const registeredMeetups = state.user.registeredMeetups
-      registeredMeetups.splice(registeredMeetups.findIndex(meetup => meetup.id === payload), 1)
-      Reflect.deleteProperty(state.user.fbKeys, payload)
-    },
-    setUser (state, payload) {
-      state.user = payload
-    },
-  }
-export const actions = {
-    registerUserForMeetup ({ commit, getters }, payload) {
-      commit('setLoading', true)
-      const user = getters.user
-      firebase.database().ref('/users/' + user.id).child('/registrations/')
-        .push(payload)
-        .then(data => {
-          commit('setLoading', false)
-          commit('registerUserForMeetup', { id: payload, fbKey: data.key })
-        })
-        .catch(error => {
-          console.log(error)
-          commit('setLoading', false)
-        })
-    },
-    unregisterUserFromMeetup ({ commit, getters }, payload) {
-      commit('setLoading', true)
-      const user = getters.user
-      if (!user.fbKeys) {
-        return
-      }
-      const fbKey = user.fbKeys[payload]
-      firebase.database().ref('/users/' + user.id + '/registrations/').child(fbKey)
-        .remove()
-        .then(() => {
-          commit('setLoading', false)
-          commit('unregisterUserFromMeetup', payload)
-        })
-        .catch(error => {
-          console.log(error)
-          commit('setLoading', false)
-        })
-    },
-    signUserUp ({ commit }, payload) {
-      commit('setLoading', true)
-      commit('clearError')
-      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-        .then(
-          user => {
-            commit('setLoading', false)
-            const newUser = {
-              id: user.uid,
-              registeredMeetups: [],
-              fbKeys: {},
-            }
-            commit('setUser', newUser)
-          },
-        )
-        .catch(
-          error => {
-            commit('setLoading', false)
-            commit('setError', error)
-            console.log(error)
-          },
-        )
-    },
-    signUserIn ({ commit }, payload) {
-      commit('setLoading', true)
-      commit('clearError')
-      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-        .then(
-          user => {
-            commit('setLoading', false)
-            const newUser = {
-              id: user.uid,
-              registeredMeetups: [],
-              fbKeys: {},
-            }
-            commit('setUser', newUser)
-          },
-        )
-        .catch(
-          error => {
-            commit('setLoading', false)
-            commit('setError', error)
-            console.log(error)
-          },
-        )
-    },
-    autoSignIn ({ commit }, payload) {
-      commit('setUser', {
-        id: payload.uid,
-        registeredMeetups: [],
-        fbKeys: {},
+
+    userThreadsCount: state => id => countObjectProperties(state.items[id].threads),
+    userPostsCount: state => id => countObjectProperties(state.items[id].posts),
+  },
+
+  actions: {
+    createUser ({ state, commit }, { id, email, name, username, avatar = null }) {
+      return new Promise((resolve, reject) => {
+        const registeredAt = Math.floor(Date.now() / 1000)
+        const usernameLower = username.toLowerCase()
+        email = email.toLowerCase()
+        const user = { avatar, email, name, username, usernameLower, registeredAt }
+        firebase.database().ref('users').child(id).set(user)
+          .then(() => {
+            commit('setItem', { resource: 'users', id: id, item: user }, { root: true })
+            resolve(state.items[id])
+          })
       })
     },
-    fetchUserData ({ commit, getters }) {
-      commit('setLoading', true)
-      firebase.database().ref('/users/' + getters.user.id + '/registrations/').once('value')
-        .then(data => {
-          const dataPairs = data.val()
-          const registeredMeetups = []
-          const swappedPairs = {}
-          for (const key in dataPairs) {
-            registeredMeetups.push(dataPairs[key])
-            swappedPairs[dataPairs[key]] = key
-          }
-          const updatedUser = {
-            id: getters.user.id,
-            registeredMeetups: registeredMeetups,
-            fbKeys: swappedPairs,
-          }
-          commit('setLoading', false)
-          commit('setUser', updatedUser)
-        })
-        .catch(error => {
-          console.log(error)
-          commit('setLoading', false)
-        })
-    },
-    logout ({ commit }) {
-      firebase.auth().signOut()
-      commit('setUser', null)
-    },
-  }
 
-export const getters = {
-    user (state) {
-      return state.user
+    updateUser ({ commit }, user) {
+      const updates = {
+        avatar: user.avatar,
+        username: user.username,
+        name: user.name,
+        bio: user.bio,
+        website: user.website,
+        email: user.email,
+        location: user.location,
+      }
+      return new Promise((resolve, reject) => {
+        firebase.database().ref('users').child(user['.key']).update(removeEmptyProperties(updates))
+          .then(() => {
+            commit('setUser', { userId: user['.key'], user })
+            resolve(user)
+          })
+      })
     },
-  }
+
+    fetchUser: ({ dispatch }, { id }) => dispatch('fetchItem', { resource: 'users', id, emoji: '🙋' }, { root: true }),
+    fetchUsers: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'users', ids, emoji: '🙋' }, { root: true }),
+  },
+
+  mutations: {
+    setUser (state, { user, userId }) {
+      Vue.set(state.items, userId, user)
+    },
+
+    appendPostToUser: makeAppendChildToParentMutation({ parent: 'users', child: 'posts' }),
+    appendThreadToUser: makeAppendChildToParentMutation({ parent: 'users', child: 'threads' }),
+  },
+}

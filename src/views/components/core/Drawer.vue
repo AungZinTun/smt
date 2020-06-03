@@ -148,7 +148,7 @@
     }),
 
     computed: {
-      ...mapState(['barColor', 'barImage']),
+      ...mapState('shared', ['barColor', 'barImage']),
       drawer: {
         get () {
           return this.$store.state.drawer

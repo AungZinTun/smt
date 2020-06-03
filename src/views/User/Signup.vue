@@ -85,12 +85,17 @@
 </template>
 
 <script>
+  import { required, email, minLength } from 'vuelidate/lib/validators'
+  import { uniqueEmail, uniqueUsername } from '@/utils/validators'
   export default {
     data () {
       return {
-        email: '',
-        password: '',
-        confirmPassword: '',
+        form: {
+          username: null,
+          email: '',
+          password: '',
+          confirmPassword: '',
+        },
       }
     },
     computed: {
@@ -107,16 +112,34 @@
         return this.$store.getters.loading
       },
     },
-    watch: {
-      user (value) {
-        if (value !== null && value !== undefined) {
-          this.$router.push('/')
-        }
+    // watch: {
+    //   user (value) {
+    //     if (value !== null && value !== undefined) {
+    //       this.$router.push('/')
+    //     }
+    //   },
+    // },
+    validations: {
+      form: {
+        username: {
+          required,
+          unique: uniqueUsername,
+        },
+        email: {
+          required,
+          email,
+          unique: uniqueEmail,
+        },
+        password: {
+          required,
+          minLength: minLength(6),
+        },
       },
     },
     methods: {
       onSignup () {
-        this.$store.dispatch('signUserUp', { email: this.email, password: this.password })
+        this.$store.dispatch('signUserUp', this.form)
+          .then(() => this.successRedirect())
       },
       onDismissed () {
         this.$store.dispatch('clearError')

@@ -9,14 +9,20 @@ import './plugins/vee-validate'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
 import firebase from 'firebase'
+import 'firebase/app'
+import 'firebase/database'
+import 'firebase/auth'
+import AppDate from '@/components/AppDate'
 
 Vue.config.productionTip = false
+Vue.component('AppDate', AppDate)
 
 new Vue({
   router,
   store,
   vuetify,
   i18n,
+  components: { App },
   created () {
     firebase.initializeApp({
       apiKey: 'AIzaSyDOwTsFBCivCPW4vX5ansCcqi_kLRsyW6k',
@@ -28,13 +34,6 @@ new Vue({
       appId: '1:563061846922:web:f0b6a36d9a43a8a4d70e73',
       measurementId: 'G-92GWFD5TCJ',
     })
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.$store.dispatch('autoSignIn', user)
-        this.$store.dispatch('fetchUserData')
-      }
-    })
-    this.$store.dispatch('loadMeetups')
   },
   render: h => h(App),
 }).$mount('#app')

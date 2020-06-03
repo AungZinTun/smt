@@ -1,20 +1,36 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as shop from '@/store/modules/shop.js'
+import * as items from '@/store/modules/items.js'
 import * as users from '@/store/modules/users.js'
+import shared from '@/store/modules/shared.js'
+import categories from './modules/categories'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-   shop,
+   items,
    users,
+   shared,
+   categories,
   },
   state: {
+    loading: false,
+    error: null,
     barColor: 'rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)',
     drawer: false,
     snackbar: false,
   },
   mutations: {
+    setLoading (state, payload) {
+      state.loading = payload
+    },
+    setError (state, payload) {
+      state.error = payload
+    },
+    clearError (state) {
+      state.error = null
+    },
+    // index
     SET_BAR_IMAGE (state, payload) {
       state.barImage = payload
     },
@@ -26,6 +42,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
-
+    clearError ({ commit }) {
+      commit('clearError')
+    },
+  },
+  getters: {
+    loading (state) {
+      return state.loading
+    },
+    error (state) {
+      return state.error
+    },
   },
 })

@@ -18,7 +18,6 @@
       <v-icon v-if="value">
         mdi-view-quilt
       </v-icon>
-
       <v-icon v-else>
         mdi-menu
       </v-icon>
@@ -53,14 +52,22 @@
     </v-text-field> -->
     <div class="mx-3" />
 
-    <!-- <v-btn
+    <v-btn
       class="ml-2"
       min-width="0"
       text
       to="/"
     >
-      <v-icon>mdi-account-multiple</v-icon>
-    </v-btn> -->
+<v-badge
+        color="red"
+        overlap
+      >
+        <template v-slot:badge>
+          <span>5</span>
+        </template>
+  <v-icon>mdi-cart</v-icon>
+  </v-badge>
+</v-btn>
 
     <!-- <v-menu
       bottom
@@ -120,17 +127,7 @@
           v-bind="attrs"
           v-on="on"
         >
-          <v-badge
-            color="red"
-            overlap
-            bordered
-          >
-            <template v-slot:badge>
-              <span>5</span>
-            </template>
-
-            <v-icon>mdi-account</v-icon>
-          </v-badge>
+          <v-icon>mdi-account</v-icon>
         </v-btn>
       </template>
       <v-list>

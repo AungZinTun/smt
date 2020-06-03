@@ -6,9 +6,9 @@
 
       <v-row>
         <v-col
-          v-for="person in item_list"
-          :key="person.id"
-          cols="12"
+          v-for="item in item_list"
+          :key="item.id"
+          cols="6"
           sm="6"
           md="4"
           lg="3"
@@ -18,33 +18,51 @@
             class="text-center ma-3"
           >
             <v-responsive class="pt-4">
-              <v-avatar
-                size="100"
+              <v-img
+                v-img
+                :src="`${item.photo}`"
+                :lazy-src="`${item.photo}`"
+                aspect-ratio="1"
                 class="grey lighten-2"
-              >
-                <img src="`${person.photo}`">
-              </v-avatar>
+              />
             </v-responsive>
             <v-card-text>
-              <div class="subheading">
-                {{ person.name }}
+              <div
+                small
+                class="display-1"
+              >
+                {{ item.name }}
               </div>
-              <div class="grey--text">
-                {{ person.brand }}
+              <div
+                small
+                class="small grey--text"
+              >
+                <span> {{ item.brand }}</span>
               </div>
             </v-card-text>
             <v-card-actions>
+              <v-chip
+
+                class="transparent"
+              >
+                <div
+                  class="small subheading"
+                  v-text="`${ Number(item.price).toLocaleString() } MMK`"
+                />
+              </v-chip>
               <v-spacer />
               <v-chip
 
                 class="transparent"
               >
-                <v-avatar left>
-                  <v-icon class="orange--text"> mdi-cart </v-icon>
+                <v-avatar right>
+                  <v-icon class="orange--text">
+                    mdi-cart
+                  </v-icon>
                 </v-avatar>
               </v-chip>
               <!-- <v-chip
-                v-for="(t, index) in person.type"
+                v-for="(t, index) in item.type"
                 :key="index"
                 small
 
@@ -64,7 +82,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   export default {
     data () {
       return {
@@ -73,6 +91,17 @@
     },
     computed: {
       ...mapGetters(['item_list']),
+    },
+    created () {
+      this.fetchAllCategories()
+        .then(categories => Promise.all(categories.map(category => this.fetchForums({ ids: Object.keys(category.forums) }))))
+        .then(() => {
+          this.asyncDataStatus_fetched()
+        })
+    },
+    methods: {
+      ...mapActions('categories', ['fetchAllCategories']),
+      ...mapActions('forums', ['fetchForums']),
     },
   }
 </script>
