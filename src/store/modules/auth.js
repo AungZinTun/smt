@@ -1,4 +1,4 @@
-import firebase from 'firebas/auth'
+import firebase from 'firebase/auth'
 export default {
   namespaced: true,
 

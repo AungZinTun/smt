@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as items from '@/store/modules/items.js'
 import * as users from '@/store/modules/users.js'
-import shared from '@/store/modules/shared.js'
 import categories from './modules/categories'
 Vue.use(Vuex)
 
@@ -10,7 +9,6 @@ export default new Vuex.Store({
   modules: {
    items,
    users,
-   shared,
    categories,
   },
   state: {

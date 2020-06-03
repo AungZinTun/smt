@@ -34,10 +34,10 @@ export default new Router({
     //   path: '/login',
     //   component: () => import('@/views/User/Signin'),
     // },
-    {
-      path: '/signup',
-      component: () => import('@/views/User/Signup'),
-    },
+    // {
+    //   path: '/signup',
+    //   component: () => import('@/views/User/Signup'),
+    // },
     {
       path: '*',
       redirect: '/',

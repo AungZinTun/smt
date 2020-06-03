@@ -1,4 +1,4 @@
-import firebase from 'firebas/database'
+import firebase from 'firebase/database'
 import { helpers as vuelidateHelpers } from 'vuelidate/lib/validators'
 
 export const uniqueUsername = (value) => {
