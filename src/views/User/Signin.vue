@@ -98,12 +98,29 @@
         }
       },
     },
+    created () {
+      this.$emit('ready')
+    },
     methods: {
       onSignin () {
-        this.$store.dispatch('auth/signUserIn', { email: this.email, password: this.password })
+        this.$store.dispatch('auth/signInWithEmailAndPassword', {
+          email: this.email,
+          password: this.password,
+        })
+          .then(() => this.successRedirect())
+          .catch(error => alert('🤷‍️' + error.message))
       },
       onDismissed () {
         this.$store.dispatch('shaclearError')
+      },
+      signInWithGoogle () {
+        this.$store.dispatch('auth/signInWithGoogle')
+          .then(() => this.successRedirect())
+          .catch(error => alert('🤷‍️' + error.message))
+      },
+      successRedirect () {
+        const redirectTo = this.$route.query.redirectTo || { name: 'Home' }
+        this.$router.push(redirectTo)
       },
     },
   }

@@ -39,6 +39,10 @@ export default new Router({
       component: () => import('@/views/User/Signup'),
     },
     {
+      path: '/setPassword',
+      component: () => import('@/views/User/setPassword'),
+    },
+    {
       path: '*',
       redirect: '/',
     },

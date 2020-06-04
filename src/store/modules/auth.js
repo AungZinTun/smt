@@ -62,11 +62,12 @@ export default {
         console.log('AuthuserFetch Done')
     },
 
-    signInWithEmailAndPassword (context, {
+    signInWithEmailAndPassword (dispatch, context, {
       email,
       password,
     }) {
       return firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(() => dispatch('fetchAuthUser'))
     },
 
     signInWithGoogle ({
