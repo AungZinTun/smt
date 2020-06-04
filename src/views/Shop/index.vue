@@ -82,26 +82,26 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   export default {
     data () {
       return {
-
+        item_list: [],
       }
     },
     computed: {
-      ...mapGetters(['item_list']),
+      // ...mapGetters(['']),
     },
     created () {
-      this.fetchAllCategories()
-        .then(categories => Promise.all(categories.map(category => this.fetchForums({ ids: Object.keys(category.forums) }))))
-        .then(() => {
-          this.asyncDataStatus_fetched()
-        })
+      // this.fetchAllCategories()
+      //   .then(categories => Promise.all(categories.map(category => this.fetchForums({ ids: Object.keys(category.forums) }))))
+      //   .then(() => {
+      //     this.asyncDataStatus_fetched()
+      //   })
     },
     methods: {
       ...mapActions('categories', ['fetchAllCategories']),
-      ...mapActions('forums', ['fetchForums']),
+      // ...mapActions('forums', ['fetchForums']),
     },
   }
 </script>

@@ -44,12 +44,12 @@
           class="mt-n2"
           elevation="1"
           fab
-          small
+          smallå
         >
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
       </template>
-    </v-text-field> -->
+    </v-text-field>-->
     <div class="mx-3" />
 
     <v-btn
@@ -58,16 +58,16 @@
       text
       to="/"
     >
-<v-badge
+      <v-badge
         color="red"
         overlap
       >
         <template v-slot:badge>
           <span>5</span>
         </template>
-  <v-icon>mdi-cart</v-icon>
-  </v-badge>
-</v-btn>
+        <v-icon>mdi-cart</v-icon>
+      </v-badge>
+    </v-btn>
 
     <!-- <v-menu
       bottom
@@ -111,8 +111,9 @@
           </app-bar-item>
         </div>
       </v-list>
-    </v-menu> -->
+    </v-menu>-->
     <v-menu
+      v-if="user"
       bottom
       left
       offset-y
@@ -159,6 +160,15 @@
         </div>
       </v-list>
     </v-menu>
+    <v-btn
+      v-else
+      class="ml-2"
+      min-width="0"
+      text
+      to="/signup"
+    >
+        <v-icon>mdi-account</v-icon>
+    </v-btn>
     <v-snackbar
       v-model="snackbar"
       top
@@ -178,39 +188,39 @@
 </template>
 
 <script>
-  // Components
-  // import { VHover, VListItem } from 'vuetify/lib'
+// Components
+// import { VHover, VListItem } from 'vuetify/lib'
 
-  // Utilities
-  import { mapState, mapMutations } from 'vuex'
+// Utilities
+  import { mapState, mapGetters, mapMutations } from 'vuex'
 
   export default {
     name: 'DashboardCoreAppBar',
 
     components: {
-      // AppBarItem: {
-      //   render (h) {
-      //     return h(VHover, {
-      //       scopedSlots: {
-      //         default: ({ hover }) => {
-      //           return h(VListItem, {
-      //             attrs: this.$attrs,
-      //             class: {
-      //               'black--text': !hover,
-      //               'white--text secondary elevation-12': hover,
-      //             },
-      //             props: {
-      //               activeClass: '',
-      //               dark: hover,
-      //               link: true,
-      //               ...this.$attrs,
-      //             },
-      //           }, this.$slots.default)
-      //         },
-      //       },
-      //     })
-      //   },
-      // },
+    // AppBarItem: {
+    //   render (h) {
+    //     return h(VHover, {
+    //       scopedSlots: {
+    //         default: ({ hover }) => {
+    //           return h(VListItem, {
+    //             attrs: this.$attrs,
+    //             class: {
+    //               'black--text': !hover,
+    //               'white--text secondary elevation-12': hover,
+    //             },
+    //             props: {
+    //               activeClass: '',
+    //               dark: hover,
+    //               link: true,
+    //               ...this.$attrs,
+    //             },
+    //           }, this.$slots.default)
+    //         },
+    //       },
+    //     })
+    //   },
+    // },
     },
 
     props: {
@@ -221,20 +231,20 @@
     },
 
     data: () => ({
-      notifications: [
-        'New pending Clinicians ',
-        'New Bookings',
-      ],
+      notifications: ['New pending Clinicians ', 'New Bookings'],
     }),
 
     computed: {
-      ...mapState(['drawer', 'snackbar']),
+      ...mapState('shared', ['drawer', 'snackbar']),
+      ...mapGetters({
+        user: 'auth/authUser',
+      }),
     },
 
     methods: {
       ...mapMutations({
-        setDrawer: 'SET_DRAWER',
-        setSnackbar: 'SET_SNACKBAR',
+        setDrawer: 'shared/SET_DRAWER',
+        setSnackbar: 'shared/SET_SNACKBAR',
       }),
       Logout () {
         this.$store.dispatch('logout')

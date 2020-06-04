@@ -1,4 +1,4 @@
-import firebase from 'firebase/auth'
+import firebase from 'firebase'
 export default {
   namespaced: true,
 
@@ -42,25 +42,24 @@ export default {
       dispatch,
     }, {
       email,
-      name,
       username,
       password,
-      avatar = null,
     }) {
-      return firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(user => {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(data => {
           return dispatch('users/createUser', {
-            id: user.uid,
+            id: data.user.uid,
             email,
-            name,
             username,
             password,
-            avatar,
           }, {
             root: true,
           })
-        })
+        },
+        console.log('AuthuserFetching'),
+        )
         .then(() => dispatch('fetchAuthUser'))
+        console.log('AuthuserFetch Done')
     },
 
     signInWithEmailAndPassword (context, {
@@ -108,6 +107,7 @@ export default {
       commit,
     }) {
       const userId = firebase.auth().currentUser.uid
+      console.log(`fetching with current UserId ${userId}`)
       return new Promise((resolve, reject) => {
         // check if user exists in the database
         firebase.database().ref('users').child(userId).once('value', snapshot => {
@@ -118,6 +118,7 @@ export default {
               root: true,
             })
               .then(user => {
+                console.log('comminting Auth ID')
                 commit('setAuthId', userId)
                 resolve(user)
               })

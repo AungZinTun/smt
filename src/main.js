@@ -25,14 +25,14 @@ new Vue({
   components: { App },
   created () {
     firebase.initializeApp({
-      apiKey: 'AIzaSyDOwTsFBCivCPW4vX5ansCcqi_kLRsyW6k',
-      authDomain: 'shweminthamee-1e281.firebaseapp.com',
-      databaseURL: 'https://shweminthamee-1e281.firebaseio.com',
-      projectId: 'shweminthamee-1e281',
-      storageBucket: 'shweminthamee-1e281.appspot.com',
-      messagingSenderId: '563061846922',
-      appId: '1:563061846922:web:f0b6a36d9a43a8a4d70e73',
-      measurementId: 'G-92GWFD5TCJ',
+      apiKey: 'AIzaSyC1KYNdVNPMO2AAyi-b_5_DX_BfcJezPlo',
+      authDomain: 'shweminthamee-mm.firebaseapp.com',
+      databaseURL: 'https://shweminthamee-mm.firebaseio.com',
+      projectId: 'shweminthamee-mm',
+      storageBucket: 'shweminthamee-mm.appspot.com',
+      messagingSenderId: '322087884448',
+      appId: '1:322087884448:web:ec8d55fa78b9979e9d1bc5',
+      measurementId: 'G-W46NS2VKGP',
     })
   },
   render: h => h(App),

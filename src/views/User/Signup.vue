@@ -25,8 +25,20 @@
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
+                      id="username"
+                      v-model="form.username"
+                      name="username"
+                      label="Username"
+                      type="name"
+                      required
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
                       id="email"
-                      v-model="email"
+                      v-model="form.email"
                       name="email"
                       label="Mail"
                       type="email"
@@ -38,7 +50,7 @@
                   <v-col cols="12">
                     <v-text-field
                       id="password"
-                      v-model="password"
+                      v-model="form.password"
                       name="password"
                       label="Password"
                       type="password"
@@ -46,18 +58,18 @@
                     />
                   </v-col>
                 </v-row>
-                <v-row>
+                <!-- <v-row>
                   <v-col cols="12">
                     <v-text-field
                       id="confirmPassword"
-                      v-model="confirmPassword"
+                      v-model="form.confirmPassword"
                       name="confirmPassword"
                       label="Confirm Password"
                       type="password"
                       :rules="[comparePasswords]"
                     />
                   </v-col>
-                </v-row>
+                </v-row> -->
                 <v-row>
                   <v-col cols="12">
                     <v-btn
@@ -91,10 +103,9 @@
     data () {
       return {
         form: {
-          username: null,
+          username: '',
           email: '',
           password: '',
-          confirmPassword: '',
         },
       }
     },
@@ -136,13 +147,22 @@
         },
       },
     },
+
+    created () {
+      this.$emit('ready')
+    },
     methods: {
       onSignup () {
-        this.$store.dispatch('signUserUp', this.form)
+        this.$store.dispatch('auth/registerUserWithEmailAndPassword', this.form)
           .then(() => this.successRedirect())
       },
       onDismissed () {
         this.$store.dispatch('clearError')
+      },
+      successRedirect () {
+        const redirectTo = this.$route.query.redirectTo || { name: 'Home' }
+        console.log(redirectTo, this.$route.query)
+        this.$router.push(redirectTo)
       },
     },
   }

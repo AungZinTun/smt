@@ -1,4 +1,5 @@
-import firebase from 'firebase/database'
+import firebase from 'firebase'
+import 'firebase/database'
 
 export default {
   fetchItem ({ state, commit }, { id, emoji, resource }) {

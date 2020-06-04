@@ -151,10 +151,10 @@
       ...mapState('shared', ['barColor', 'barImage']),
       drawer: {
         get () {
-          return this.$store.state.drawer
+          return this.$store.state.shared.drawer
         },
         set (val) {
-          this.$store.commit('SET_DRAWER', val)
+          this.$store.commit('shared/SET_DRAWER', val)
         },
       },
       computedItems () {
