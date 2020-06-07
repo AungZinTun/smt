@@ -3,7 +3,17 @@
     <v-container class="my-5">
       <!-- <h1 class="subheading grey--text">
       </h1> -->
-
+      <v-row>
+        <v-col>
+          <div
+            v-if="asyncDataStatus_ready"
+            class="col-full push-top"
+          >
+            <h1>Welcome to the Brand</h1>
+            <category-list :categories="categories" />
+          </div>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col
           v-for="item in item_list"
@@ -13,7 +23,7 @@
           md="4"
           lg="3"
         >
-          <v-card
+          <!-- <v-card
             text
             class="text-center ma-3"
           >
@@ -61,20 +71,8 @@
                   </v-icon>
                 </v-avatar>
               </v-chip>
-              <!-- <v-chip
-                v-for="(t, index) in item.type"
-                :key="index"
-                small
-
-                class="info"
-              >
-                <v-avatar left>
-                  <v-icon small> mdi-stethoscope </v-icon>
-                </v-avatar>
-                {{ t }}
-              </v-chip> -->
             </v-card-actions>
-          </v-card>
+          </v-card> -->
         </v-col>
       </v-row>
     </v-container>
@@ -82,8 +80,15 @@
 </template>
 
 <script>
+
   import { mapActions } from 'vuex'
+  // import CategoryList from '@/components/CategoryList'
+  import asyncDataStatus from '@/mixins/asyncDataStatus'
   export default {
+    components: {
+      // CategoryList,
+    },
+    mixins: [asyncDataStatus],
     data () {
       return {
         item_list: [],
@@ -93,15 +98,15 @@
       // ...mapGetters(['']),
     },
     created () {
-      // this.fetchAllCategories()
-      //   .then(categories => Promise.all(categories.map(category => this.fetchForums({ ids: Object.keys(category.forums) }))))
-      //   .then(() => {
-      //     this.asyncDataStatus_fetched()
-      //   })
+      this.fetchAllCategories()
+      this.fetchAllProducts()
+        .then(() => {
+          this.asyncDataStatus_fetched()
+        })
     },
     methods: {
       ...mapActions('categories', ['fetchAllCategories']),
-      // ...mapActions('forums', ['fetchForums']),
+      ...mapActions('products', ['fetchAllProducts']),
     },
   }
 </script>

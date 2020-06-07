@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import { makeAppendChildToParentMutation } from '@/store/assetHelpers'
 
 export default {
   namespaced: true,
@@ -24,5 +25,8 @@ export default {
 
     fetchCategory: ({ dispatch }, { id }) => dispatch('fetchItem', { resource: 'categories', id, emoji: '🏷' }, { root: true }),
     fetchCategories: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'categories', ids, emoji: '🏷' }, { root: true }),
+  },
+  mutations: {
+    appendProductToBrand: makeAppendChildToParentMutation({ parent: 'categories', child: 'products' }),
   },
 }

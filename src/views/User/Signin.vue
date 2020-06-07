@@ -103,6 +103,7 @@
     },
     methods: {
       onSignin () {
+        console.log(this.email, this.password)
         this.$store.dispatch('auth/signInWithEmailAndPassword', {
           email: this.email,
           password: this.password,

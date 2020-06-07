@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store'
 // import AuthGuard from './auth-guard'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -15,8 +16,13 @@ export default new Router({
         {
           name: 'Home',
           path: '',
-          component: () => import('@/views/Shop/index'),
+          component: () => import('@/views/pages/index'),
         },
+        // {
+        //   name: 'PruductCreate',
+        //   path: 'product/create',
+        //   component: () => import('@/views/pages/PageProductCreate'),
+        // },
         // {
         //   name: 'User',
         //   path: 'user',
@@ -48,3 +54,30 @@ export default new Router({
     },
   ],
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(`🚦 navigating to ${to.name} from ${from.name}`)
+
+  store.dispatch('auth/initAuthentication')
+    .then(user => {
+      if (to.matched.some(route => route.meta.requiresAuth)) {
+        // protected route
+        if (user) {
+          next()
+        } else {
+          next({ name: 'login', query: { redirectTo: to.path } })
+        }
+      } else if (to.matched.some(route => route.meta.requiresGuest)) {
+        // protected route
+        if (!user) {
+          next()
+        } else {
+          next({ name: 'Home' })
+        }
+      } else {
+        next()
+      }
+    })
+})
+
+export default router

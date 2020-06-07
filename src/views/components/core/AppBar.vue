@@ -165,9 +165,17 @@
       class="ml-2"
       min-width="0"
       text
-      to="/signup"
+      to="/login"
     >
-        <v-icon>mdi-account</v-icon>
+      <v-icon>mdi-account</v-icon>
+    </v-btn>
+    <v-btn
+      class="ml-2"
+      min-width="0"
+      text
+      to="/product/create"
+    >
+      <v-icon>mdi-plus</v-icon>
     </v-btn>
     <v-snackbar
       v-model="snackbar"

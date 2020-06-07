@@ -1,18 +1,15 @@
 import firebase from 'firebase'
 export default {
   namespaced: true,
-
   state: {
     authId: null,
     unsubscribeAuthObserver: null,
   },
-
   getters: {
     authUser (state, getters, rootState) {
       return state.authId ? rootState.users.items[state.authId] : null
     },
   },
-
   actions: {
     initAuthentication ({
       dispatch,
@@ -24,7 +21,6 @@ export default {
         if (state.unsubscribeAuthObserver) {
           state.unsubscribeAuthObserver()
         }
-
         const unsubscribe = firebase.auth().onAuthStateChanged(user => {
           console.log('👣 the user has changed')
           if (user) {
@@ -37,7 +33,6 @@ export default {
         commit('setUnsubscribeAuthObserver', unsubscribe)
       })
     },
-
     registerUserWithEmailAndPassword ({
       dispatch,
     }, {
@@ -61,15 +56,13 @@ export default {
         .then(() => dispatch('fetchAuthUser'))
         console.log('AuthuserFetch Done')
     },
-
-    signInWithEmailAndPassword (dispatch, context, {
+    signInWithEmailAndPassword ({ dispatch }, {
       email,
       password,
     }) {
       return firebase.auth().signInWithEmailAndPassword(email, password)
       .then(() => dispatch('fetchAuthUser'))
     },
-
     signInWithGoogle ({
       dispatch,
     }) {
@@ -93,7 +86,6 @@ export default {
           })
         })
     },
-
     signOut ({
       commit,
     }) {
@@ -102,7 +94,6 @@ export default {
           commit('setAuthId', null)
         })
     },
-
     fetchAuthUser ({
       dispatch,
       commit,
@@ -130,12 +121,10 @@ export default {
       })
     },
   },
-
   mutations: {
     setAuthId (state, id) {
       state.authId = id
     },
-
     setUnsubscribeAuthObserver (state, unsubscribe) {
       state.unsubscribeAuthObserver = unsubscribe
     },

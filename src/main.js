@@ -17,23 +17,23 @@ import AppDate from '@/components/AppDate'
 Vue.config.productionTip = false
 Vue.component('AppDate', AppDate)
 
+const config = {
+  apiKey: 'AIzaSyC1KYNdVNPMO2AAyi-b_5_DX_BfcJezPlo',
+  authDomain: 'shweminthamee-mm.firebaseapp.com',
+  databaseURL: 'https://shweminthamee-mm.firebaseio.com',
+  projectId: 'shweminthamee-mm',
+  storageBucket: 'shweminthamee-mm.appspot.com',
+  messagingSenderId: '322087884448',
+  appId: '1:322087884448:web:ec8d55fa78b9979e9d1bc5',
+  measurementId: 'G-W46NS2VKGP',
+}
+firebase.initializeApp(config)
+
 new Vue({
   router,
   store,
   vuetify,
   i18n,
   components: { App },
-  created () {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyC1KYNdVNPMO2AAyi-b_5_DX_BfcJezPlo',
-      authDomain: 'shweminthamee-mm.firebaseapp.com',
-      databaseURL: 'https://shweminthamee-mm.firebaseio.com',
-      projectId: 'shweminthamee-mm',
-      storageBucket: 'shweminthamee-mm.appspot.com',
-      messagingSenderId: '322087884448',
-      appId: '1:322087884448:web:ec8d55fa78b9979e9d1bc5',
-      measurementId: 'G-W46NS2VKGP',
-    })
-  },
   render: h => h(App),
 }).$mount('#app')

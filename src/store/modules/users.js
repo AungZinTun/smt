@@ -11,17 +11,17 @@ export default {
   },
 
   getters: {
-    userPosts: (state, getters, rootState) => id => {
+    userPrices: (state, getters, rootState) => id => {
       const user = state.items[id]
-      if (user.posts) {
-        return Object.values(rootState.posts.items)
-          .filter(post => post.userId === id)
+      if (user.prices) {
+        return Object.values(rootState.prices.items)
+          .filter(price => price.userId === id)
       }
       return []
     },
 
-    userThreadsCount: state => id => countObjectProperties(state.items[id].threads),
-    userPostsCount: state => id => countObjectProperties(state.items[id].posts),
+    userProductsCount: state => id => countObjectProperties(state.items[id].products),
+    userPricesCount: state => id => countObjectProperties(state.items[id].prices),
   },
 
   actions: {
@@ -68,7 +68,7 @@ export default {
       Vue.set(state.items, userId, user)
     },
 
-    appendPostToUser: makeAppendChildToParentMutation({ parent: 'users', child: 'posts' }),
-    appendThreadToUser: makeAppendChildToParentMutation({ parent: 'users', child: 'threads' }),
+    appendPriceToUser: makeAppendChildToParentMutation({ parent: 'users', child: 'prices' }),
+    appendProductToUser: makeAppendChildToParentMutation({ parent: 'users', child: 'products' }),
   },
 }

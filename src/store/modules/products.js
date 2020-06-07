@@ -11,38 +11,47 @@ export default {
   },
 
   getters: {
-    productRepliesCount: state => id => countObjectProperties(state.items[id].posts) - 1,
+    productRepliesCount: state => id => countObjectProperties(state.items[id].prices) - 1,
   },
 
   actions: {
-    createProduct ({ state, commit, dispatch, rootState }, { text, title, forumId }) {
+    createProduct ({ state, commit, dispatch, rootState }, { text, name, brandId, categoryId, retailPrice, image }) {
       return new Promise((resolve, reject) => {
         const productId = firebase.database().ref('products').push().key
-        const postId = firebase.database().ref('posts').push().key
+
+        const filename = image.name
+        const ext = filename.slice(filename.lastIndexOf('.'))
+        const src = firebase.storage().ref('products/' + productId + '.' + ext).put(image)
+          .then(fileData => {
+            fileData.ref.getDownloadURL().then((imageUrl) => {
+            return imageUrl
+          })
+          })
+        const priceId = firebase.database().ref('prices').push().key
         const userId = rootState.auth.authId
         const publishedAt = Math.floor(Date.now() / 1000)
-
-        const product = { title, forumId, publishedAt, userId, firstPostId: postId, posts: {} }
-        product.posts[postId] = postId
-        const post = { text, publishedAt, productId, userId }
+        const product = { name, text, brandId, categoryId, publishedAt, userId, retailPriceId: priceId, prices: {}, image: src }
+        product.prices[priceId] = priceId
+        const price = { publishedAt, productId, userId, quanity: 1, retailPrice }
 
         const updates = {}
         updates[`products/${productId}`] = product
-        updates[`forums/${forumId}/products/${productId}`] = productId
+        updates[`brands/${brandId}/products/${productId}`] = productId
         updates[`users/${userId}/products/${productId}`] = productId
+        updates[`categories/${categoryId}/products/${productId}`] = productId
 
-        updates[`posts/${postId}`] = post
-        updates[`users/${userId}/posts/${postId}`] = postId
+        updates[`prices/${priceId}`] = price
         firebase.database().ref().update(updates)
           .then(() => {
             // update product
             commit('setItem', { resource: 'products', id: productId, item: product }, { root: true })
-            commit('forums/appendProductToForum', { parentId: forumId, childId: productId }, { root: true })
+            commit('brands/appendProductToBrand', { parentId: brandId, childId: productId }, { root: true })
+            commit('categories/appendProductToBrand', { parentId: brandId, childId: productId }, { root: true })
             commit('users/appendProductToUser', { parentId: userId, childId: productId }, { root: true })
-            // update post
-            commit('setItem', { resource: 'posts', item: post, id: postId }, { root: true })
-            commit('appendPostToProduct', { parentId: post.productId, childId: postId })
-            commit('users/appendPostToUser', { parentId: post.userId, childId: postId }, { root: true })
+            // update price
+            commit('setItem', { resource: 'prices', item: price, id: priceId }, { root: true })
+            commit('appendPriceToProduct', { parentId: price.productId, childId: priceId })
+            commit('users/appendPriceToUser', { parentId: price.userId, childId: priceId }, { root: true })
 
             resolve(state.items[productId])
           })
@@ -52,7 +61,7 @@ export default {
     updateProduct ({ state, commit, dispatch, rootState }, { title, text, id }) {
       return new Promise((resolve, reject) => {
         const product = state.items[id]
-        const post = rootState.posts.items[product.firstPostId]
+        const price = rootState.prices.items[product.firstPriceId]
 
         const edited = {
           at: Math.floor(Date.now() / 1000),
@@ -60,16 +69,29 @@ export default {
         }
 
         const updates = {}
-        updates[`posts/${product.firstPostId}/text`] = text
-        updates[`posts/${product.firstPostId}/edited`] = edited
+        updates[`prices/${product.firstPriceId}/text`] = text
+        updates[`prices/${product.firstPriceId}/edited`] = edited
         updates[`products/${id}/title`] = title
 
         firebase.database().ref().update(updates)
           .then(() => {
             commit('setProduct', { product: { ...product, title }, productId: id })
-            commit('posts/setPost', { postId: product.firstPostId, post: { ...post, text, edited } }, { root: true })
-            resolve(post)
+            commit('prices/setPrice', { priceId: product.firstPriceId, price: { ...price, text, edited } }, { root: true })
+            resolve(price)
           })
+      })
+    },
+    fetchAllProducts ({ state, commit }) {
+      console.log('🔥', '👜', 'all')
+      return new Promise((resolve, reject) => {
+        firebase.database().ref('products').once('value', snapshot => {
+          const productsObject = snapshot.val()
+          Object.keys(productsObject).forEach(productId => {
+            const product = productsObject[productId]
+            commit('setItem', { resource: 'products', id: productId, item: product }, { root: true })
+          })
+          resolve(Object.values(state.items))
+        })
       })
     },
     fetchProduct: ({ dispatch }, { id }) => dispatch('fetchItem', { resource: 'products', id, emoji: '📄' }, { root: true }),
@@ -80,7 +102,7 @@ export default {
       Vue.set(state.items, productId, product)
     },
 
-    appendPostToProduct: makeAppendChildToParentMutation({ parent: 'products', child: 'posts' }),
+    appendPriceToProduct: makeAppendChildToParentMutation({ parent: 'products', child: 'prices' }),
     appendContributorToProduct: makeAppendChildToParentMutation({ parent: 'products', child: 'contributors' }),
   },
 }
